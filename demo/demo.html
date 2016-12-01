@@ -1,0 +1,24 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="A demo of Boost JS Modal">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Boost JS Tooltip Demo</title>
+        <link href="demo.css" rel="stylesheet">
+    </head>
+    <body>
+        <div class="container">
+            <button data-init="tooltip" title="This is some message">Hover over me</button>
+        </div>
+        <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js"></script>
+        <script src="https://cdn.rawgit.com/marksmccann/boost-js/v0.4.1/dist/boost.min.js"></script>
+        <script src="../dist/tooltip.min.js"></script>
+        <script>
+            var boost = $.fn.boost;
+            var tooltip = $.fn.boost.tooltip;
+            $.fn.tooltip = boost( tooltip.plugin, tooltip.defaults );
+            boost.auto();
+        </script>
+    </body>
+</html>
