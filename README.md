@@ -45,7 +45,7 @@ Name | Default | Description
 activeClass | `"is-visible"` | the class added to the tip when activated
 tipClass | `"tooltip"` | a class added to the tip element
 placement | `"top"` | the position of the tip relative to the source. Options: top, left, right, center.
-idPrefix | `tooltip-` | prefix for tip's id when source element doesn't have one
+idPrefix | `"tooltip-"` | prefix for tip's id when source element doesn't have one
 margin | `10` | the number of pixels from the source element
 onShow | `null` | a callback function called when the tooltip is visible
 onHide | `null` | a callback function called when the tooltip is hidden
