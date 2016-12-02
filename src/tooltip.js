@@ -9,9 +9,13 @@
 
 (function(){
 
-    // a counter used to create a unique id 
-    // for each instance
-    var uniqueId = 0;
+    /**
+     * generates a random 4 character string
+     * @return {string} random
+     */
+    function uniqueId() {
+        return ("0000" + (Math.random()*Math.pow(36,4) << 0).toString(36)).slice(-4);
+    }
 
     var Tooltip = function() {
         // local instance
@@ -24,14 +28,17 @@
         inst.tip = $( document.createElement('div') )
             .html( inst.title )
             .addClass( inst.settings.tipClass )
-            .attr( 'id', inst.id !== null ? inst.id+'-tooltip' : this.settings.idPrefix + uniqueId++ )
+            .addClass( inst.settings.tipClass +'-'+ inst.settings.placement )
+            .attr( 'id', inst.id !== null ? inst.id+'-tooltip' : this.settings.tipClass +'-'+ uniqueId() )
             .css( 'position', 'absolute' );
         // set events to show tip
         inst.source.on('mouseover',function(){
             inst.show();
         });
         inst.source.on('mouseout',function(){
-            inst.hide();
+            if( document.activeElement !== inst.source[0] ) {
+                inst.hide();
+            }
         });
         inst.source.on('focus',function(){
             inst.show();
@@ -52,17 +59,20 @@
         show: function( callback ) {
             // local instance
             var inst = this;
-            // update aria attribute on source element
-            inst.source.attr( 'aria-labelledby', inst.tip[0].id );
-            // position tip relative to source
-            inst.setPosition();
-            // add tip to document
-            document.body.appendChild( inst.tip[0] );
-            // add the active class to elems
-            inst.tip.addClass( inst.settings.activeClass );
-            // run the callbacks
-            if( $.isFunction(callback) ) callback.call(this);
-            if( $.isFunction(inst.settings.onShow) ) inst.settings.onShow.call(this);
+            // make sure tip is closed before opening
+            if( !inst.isVisible() ) {
+                // update aria attribute on source element
+                inst.source.attr( 'aria-labelledby', inst.tip[0].id );
+                // position tip relative to source
+                inst.setPosition();
+                // add tip to document
+                document.body.appendChild( inst.tip[0] );
+                // add the active class to elems
+                inst.tip.addClass( inst.settings.activeClass );
+                // run the callbacks
+                if( $.isFunction(callback) ) callback.call(this);
+                if( $.isFunction(inst.settings.onShow) ) inst.settings.onShow.call(this);
+            }
             // return instance
             return inst;
         },
@@ -74,17 +84,27 @@
         hide: function( callback ) {
             // local instance
             var inst = this;
-            // update aria attribute on source element
-            inst.source[0].removeAttribute( 'aria-labelledby' );
-            // remove the active class to elems
-            inst.tip.removeClass( inst.settings.activeClass );
-            // remove element from document
-            document.body.removeChild( inst.tip[0] );
-            // run the callbacks
-            if( $.isFunction(callback) ) callback.call(this);
-            if( $.isFunction(inst.settings.onHide) ) inst.settings.onHide.call(this);
+            // make sure tip is open before closing
+            if( inst.isVisible() ) {
+                // update aria attribute on source element
+                inst.source[0].removeAttribute( 'aria-labelledby' );
+                // remove the active class to elems
+                inst.tip.removeClass( inst.settings.activeClass );
+                // remove element from document
+                document.body.removeChild( inst.tip[0] );
+                // run the callbacks
+                if( $.isFunction(callback) ) callback.call(this);
+                if( $.isFunction(inst.settings.onHide) ) inst.settings.onHide.call(this);
+            }
             // return instance
             return inst;
+        },
+        /**
+         * determines if tooltip is visible or not
+         * @return {boolean}
+         */
+        isVisible: function() {
+            return document.body.contains(this.tip[0]) && this.tip.hasClass( this.settings.activeClass );
         },
         /**
          * calculates the sets the top/left position for the tip element
@@ -131,7 +151,6 @@
             tipClass: 'tooltip',
             activeClass: 'is-visible',
             placement: 'top',
-            idPrefix: 'tooltip-',
             margin: 10,
             onInit: null,
             onShow: null,

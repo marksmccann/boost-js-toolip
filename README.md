@@ -30,7 +30,7 @@ $.fn.tooltip = boost( tooltip.plugin, tooltip.defaults );
 
 ### Markup Structure
 ```html
-<button id="tooltip" title="Your tooltip message goes here">...</button>
+<button title="Your tooltip message goes here">...</button>
 ```
 
 ### Instantiate Plugin
@@ -43,13 +43,12 @@ Options
 Name | Default | Description
 --- | --- | ---
 activeClass | `"is-visible"` | the class added to the tip when activated
-tipClass | `"tooltip"` | a class added to the tip element
+tipClass | `"tooltip"` | a class added to tip and used to prefix placement class and id
 placement | `"top"` | the position of the tip relative to the source. Options: top, left, right, center.
-idPrefix | `"tooltip-"` | prefix for tip's id when source element doesn't have one
 margin | `10` | the number of pixels from the source element
-onShow | `null` | a callback function called when the tooltip is visible
-onHide | `null` | a callback function called when the tooltip is hidden
-onInit | `null` | a callback function called when the tooltip is initialized
+onShow | `null` | a callback function called after the tooltip is made visible
+onHide | `null` | a callback function called after the tooltip is hidden
+onInit | `null` | a callback function called after the tooltip is initialized
 ### Usage
 ```javascript
 $('#tooltip').tooltip({
@@ -74,6 +73,11 @@ instance.show();
 Hides the tooltip. `fn`: optional callback function called after opening.
 ```javascript
 instance.close();
+```
+### isVisible()
+Determines if tooltip is visible or not.
+```javascript
+instance.isVisible();
 ```
 ### setPosition()
 Calculates the sets the top/left position for the tip element.
