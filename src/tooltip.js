@@ -29,7 +29,7 @@
             .html( inst.title )
             .addClass( inst.settings.tipClass )
             .addClass( inst.settings.tipClass +'-'+ inst.settings.placement )
-            .attr( 'id', inst.id !== null ? inst.id+'-tooltip' : this.settings.tipClass +'-'+ uniqueId() )
+            .attr( 'id', inst.id !== null ? inst.id+'-tooltip' : 'tooltip-'+ uniqueId() )
             .css( 'position', 'absolute' );
         // set events to show tip
         inst.source.on('mouseover',function(){
@@ -70,8 +70,8 @@
                 // add the active class to elems
                 inst.tip.addClass( inst.settings.activeClass );
                 // run the callbacks
-                if( $.isFunction(callback) ) callback.call(this);
-                if( $.isFunction(inst.settings.onShow) ) inst.settings.onShow.call(this);
+                if( $.isFunction(callback) ) callback.call(inst);
+                if( $.isFunction(inst.settings.onShow) ) inst.settings.onShow.call(inst);
             }
             // return instance
             return inst;
@@ -93,8 +93,8 @@
                 // remove element from document
                 document.body.removeChild( inst.tip[0] );
                 // run the callbacks
-                if( $.isFunction(callback) ) callback.call(this);
-                if( $.isFunction(inst.settings.onHide) ) inst.settings.onHide.call(this);
+                if( $.isFunction(callback) ) callback.call(inst);
+                if( $.isFunction(inst.settings.onHide) ) inst.settings.onHide.call(inst);
             }
             // return instance
             return inst;

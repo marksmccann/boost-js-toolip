@@ -70,9 +70,9 @@ Shows the tooltip. `fn`: optional callback function called after opening.
 instance.show();
 ```
 ### hide( fn )
-Hides the tooltip. `fn`: optional callback function called after opening.
+Hides the tooltip. `fn`: optional callback function called after closing.
 ```javascript
-instance.close();
+instance.hide();
 ```
 ### isVisible()
 Determines if tooltip is visible or not.
