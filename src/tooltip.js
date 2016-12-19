@@ -20,32 +20,31 @@
     var Tooltip = function() {
         // local instance
         var inst = this;
-        // get and save title value
+        // get and save title value then remove from element
         inst.title = inst.source.attr('title');
-        // remove title attribute from element
         inst.source[0].removeAttribute('title');
         // create tooltip element
         inst.tip = $( document.createElement('div') )
             .html( inst.title )
             .addClass( inst.settings.tipClass )
             .addClass( inst.settings.tipClass +'-'+ inst.settings.placement )
-            .attr( 'id', inst.id !== null ? inst.id+'-tooltip' : 'tooltip-'+ uniqueId() )
-            .css( 'position', 'absolute' );
-        // set events to show tip
-        inst.source.on('mouseover',function(){
-            inst.show();
-        });
-        inst.source.on('mouseout',function(){
-            if( document.activeElement !== inst.source[0] ) {
-                inst.hide();
-            }
-        });
-        inst.source.on('focus',function(){
-            inst.show();
-        });
-        inst.source.on('blur',function(){
-            inst.hide();
-        });
+            .attr( 'id', 'tooltip-'+ (inst.id !== null ? inst.id : uniqueId()) )
+            .css( 'position', 'absolute' )
+            .attr('aria-hidden','true');
+        // update labelledby attribute on source element
+        // and add event handlers
+        inst.source
+            .attr( 'aria-labelledby', inst.tip[0].id )
+            .on('focus',function(){ inst.show(); })
+            .on('blur',function(){ inst.hide(); })
+            .on('mouseover',function(){ inst.show(); })
+            .on('mouseout',function(){
+                if( document.activeElement !== inst.source[0] ) {
+                    inst.hide();
+                }
+            });
+        // add the tip to document
+        document.body.appendChild( inst.tip[0] );
         // run the onInit callback
         if( $.isFunction(inst.settings.onInit) ) inst.settings.onInit.call(inst);
     }
@@ -61,14 +60,12 @@
             var inst = this;
             // make sure tip is closed before opening
             if( !inst.isVisible() ) {
-                // update aria attribute on source element
-                inst.source.attr( 'aria-labelledby', inst.tip[0].id );
                 // position tip relative to source
                 inst.setPosition();
-                // add tip to document
-                document.body.appendChild( inst.tip[0] );
-                // add the active class to elems
-                inst.tip.addClass( inst.settings.activeClass );
+                // add the active class and more to tip
+                inst.tip
+                    .attr('aria-hidden','false')
+                    .addClass( inst.settings.activeClass );
                 // run the callbacks
                 if( $.isFunction(callback) ) callback.call(inst);
                 if( $.isFunction(inst.settings.onShow) ) inst.settings.onShow.call(inst);
@@ -86,12 +83,10 @@
             var inst = this;
             // make sure tip is open before closing
             if( inst.isVisible() ) {
-                // update aria attribute on source element
-                inst.source[0].removeAttribute( 'aria-labelledby' );
                 // remove the active class to elems
-                inst.tip.removeClass( inst.settings.activeClass );
-                // remove element from document
-                document.body.removeChild( inst.tip[0] );
+                inst.tip
+                    .attr('aria-hidden','true')
+                    .removeClass( inst.settings.activeClass );
                 // run the callbacks
                 if( $.isFunction(callback) ) callback.call(inst);
                 if( $.isFunction(inst.settings.onHide) ) inst.settings.onHide.call(inst);
@@ -114,15 +109,9 @@
         setPosition: function() {
             // local instance
             var inst = this;
-            // append hidden tip to get dimensions
-            inst.tip.css( 'opacity', '0' );
-            document.body.appendChild( inst.tip[0] );
             // get the rects for source and tip elems
             var srcRect = inst.source[0].getBoundingClientRect();
             var tipRect = inst.tip[0].getBoundingClientRect();
-            // show and remove tip from body
-            inst.tip.css( 'opacity', '' );
-            document.body.removeChild( inst.tip[0] );
             // calculate and set position based on placement
             if( inst.settings.placement == 'right' ) {
                 inst.tip.css( 'top', (srcRect.height/2) - (tipRect.height/2) + srcRect.top );

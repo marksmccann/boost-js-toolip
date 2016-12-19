@@ -30,7 +30,7 @@ $.fn.tooltip = boost( tooltip.plugin, tooltip.defaults );
 
 ### Markup Structure
 ```html
-<button title="Your tooltip message goes here">...</button>
+<button id="tooltip" title="Your tooltip message goes here">...</button>
 ```
 
 ### Instantiate Plugin
@@ -43,7 +43,7 @@ Options
 Name | Default | Description
 --- | --- | ---
 activeClass | `"is-visible"` | the class added to the tip when activated
-tipClass | `"tooltip"` | a class added to tip and used to prefix placement class and id
+tipClass | `"tooltip"` | a class added to tip and used to prefix placement class
 placement | `"top"` | the position of the tip relative to the source. Options: top, left, right, center.
 margin | `10` | the number of pixels from the source element
 onShow | `null` | a callback function called after the tooltip is made visible

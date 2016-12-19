@@ -2,3 +2,66 @@
     text-align: center;
     padding: 4em 2em;
 }
+
+.tooltip {
+    background-color: rgba(0,0,0,.85);
+    padding: .25em .5em;
+    font-size: .8em;
+    color: #fff;
+    font-family: sans-serif;
+    position: relative;
+    transition: opacity .25s;
+    opacity: 0;
+    border-radius: 2px;
+}
+
+.tooltip.is-visible {
+    opacity: 1;
+}
+
+.tooltip-top:before,
+.tooltip-bottom:before,
+.tooltip-right:before,
+.tooltip-left:before {
+    display: block;
+    content: '';
+    width: 0;
+    height: 0;
+    position: absolute;
+}
+
+.tooltip-top:before,
+.tooltip-bottom:before {
+    left: 50%;
+    margin-left: -5px;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+}
+
+.tooltip-left:before,
+.tooltip-right:before {
+    top: 50%;
+    margin-top: -5px;
+    border-top: 5px solid transparent;
+    border-bottom: 5px solid transparent;
+}
+
+.tooltip-top:before {
+    border-top: 5px solid rgba(0,0,0,.85);
+    top: 100%;
+}
+
+.tooltip-bottom:before {
+    border-bottom: 5px solid rgba(0,0,0,.85);
+    bottom: 100%;
+}
+
+.tooltip-left:before {
+    border-left: 5px solid rgba(0,0,0,.85);
+    left: 100%;
+}
+
+.tooltip-right:before {
+    border-right: 5px solid rgba(0,0,0,.85);
+    right: 100%;
+}
