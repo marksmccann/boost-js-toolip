@@ -1,4 +1,4 @@
-Boost JS Tooltip
+Boost JS Tooltip [![Build Status](https://travis-ci.org/marksmccann/boost-js-tooltip.svg?branch=master)](https://travis-ci.org/marksmccann/boost-js-tooltip)
 ==================================================
 A style-free tooltip plugin for jQuery and [Boost JS](https://github.com/marksmccann/boost-js). While other plugins style your tooltip for you, this plugin only handles the functionality, leaving the layout styling up to you.
 
